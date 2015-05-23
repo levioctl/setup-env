@@ -69,4 +69,14 @@ exe-and-log-debug "sudo ansible-playbook -s apt-playbook.yaml -vvvvv"
 
 log "Copying tmux configuration file..."
 cp {,~/.}tmux.conf
+log "Configuring VIM..."
+cp {,~/.}vimrc
+if [ ! -d "~/.vim" ]; then
+    mkdir ~/.vim
+    if [ ! -d "~/.vim/bundle" ]; then
+        mkdir ~/.vim/bundle
+        git clone https://github.com/kien/ctrlp.vim.git ~/.vim/bundle/ctrlp.vim
+    fi
+fi
+
 log "Done."
