@@ -1,5 +1,9 @@
 - hosts: 127.0.0.1
   tasks:
-  - name: Install Nginx
-    apt: pkg=cmatrix state=installed update_cache=true
+  - apt: pkg=vim state=installed update_cache=true
+  - apt: pkg=vim-gui-common state=installed update_cache=true
+  - apt: pkg=tmux state=installed update_cache=true
+  - apt: pkg=firefox state=installed update_cache=true
+  - apt: pkg=xclip state=installed update_cache=true
+  - apt: pkg=cmatrix state=installed update_cache=true
 
