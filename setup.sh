@@ -1,5 +1,21 @@
 #!/bin/bash
-PKG_MGR_CMD="sudo apt-get install -y"
+
+# Determine package manager
+YUM_CMD=$(which yum)
+APT_GET_CMD=$(which apt-get)
+if [[ ! -z $YUM_CMD ]]; then
+INITIAL_PACKAGES="python python-devel python-setuptools openssh-server"
+PKG_MGR_CMD="sudo yum install -y"
+ANSIBLE_PLAYBOOK_FILE="yum-playbook.yaml"
+elif [[ ! -z $APT_GET_CMD ]]; then
+INITIAL_PACKAGES="python python-dev python-setuptools openssh-server"
+PKG_MGR_CMD="sudo apt install -y"
+ANSIBLE_PLAYBOOK_FILE="apt-playbook.yaml"
+else
+    echo "Error: Package manager was not found."
+    exit 1;
+fi
+
 export LOG_FILE="/tmp/setup.log"
 
 echo "Run this without 'source'."
@@ -45,10 +61,9 @@ if [ "$result" = "" ]; then
 	echo "bind '\"\e[A\": history-search-backward'" >> ~/.bashrc
 	echo "bind '\"\e[B\": history-search-forward'" >> ~/.bashrc
 fi
-source ~/.bashrc
+source $HOME/.bashrc || true
 
 # Install only what's necessary to use ansible
-INITIAL_PACKAGES="python python-dev python-setuptools openssh-server"
 echo "Full log will be written to '$LOG_FILE'."
 for _package in $INITIAL_PACKAGES; do
 	log "Installing $_package"
@@ -65,18 +80,20 @@ log "Creating Ansible's hosts file..."
 sudo sh -c 'echo "[local]\n127.0.0.1" > /etc/ansible/hosts ansible_connection=local'
 
 log "Installing packages using ansible..."
-exe-and-log-debug "sudo ansible-playbook -s apt-playbook.yaml -vvvvv"
+exe-and-log-debug "sudo ansible-playbook -s $ANSIBLE_PLAYBOOK_FILE -vvvvv"
 
 log "Copying tmux configuration file..."
 cp {,~/.}tmux.conf
 log "Configuring VIM..."
 cp {,~/.}vimrc
-if [ ! -d "~/.vim" ]; then
+if [ ! -d "$HOME/.vim" ]; then
     mkdir ~/.vim
-    if [ ! -d "~/.vim/bundle" ]; then
-        mkdir ~/.vim/bundle
-        git clone https://github.com/kien/ctrlp.vim.git ~/.vim/bundle/ctrlp.vim
-    fi
+fi
+if [ ! -d "$HOME/.vim/bundle" ]; then
+    mkdir ~/.vim/bundle
+fi
+if [ ! -d "$HOME/.vim/bundle/ctrlp.vim" ]; then
+    git clone https://github.com/kien/ctrlp.vim.git ~/.vim/bundle/ctrlp.vim
 fi
 
 log "Done."
