@@ -56,4 +56,7 @@ sudo sh -c 'echo "[local]\n127.0.0.1" > /etc/ansible/hosts ansible_connection=lo
 
 echo "Installing packages using ansible..." | tee -a $LOG_FILE
 sudo ansible-playbook -s apt-playbook.yaml -vvvvv &>> $LOG_FILE
+
+echo "Copy tmux configuration file..." | tee -a $LOG_FILE
+cp {,~/.}tmux.conf
 echo "Done." | tee -a $LOG_FILE
