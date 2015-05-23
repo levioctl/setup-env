@@ -24,9 +24,16 @@ git config --global alias.lg2 "log --graph --abbrev-commit --decorate --format=f
 git config --global alias.lg \!"git lg1"
 
 echo "More bash configurations..." | tee -a $LOG_FILE
-if test 'grep "show-all-if-ambiguous" -q ~/.bashrc'; then
+export result=`grep "show-all-if-ambiguous" ~/.bashrc`
+if [ "$result" = "" ]; then
 	echo "bind 'set show-all-if-ambiguous on'" >> ~/.bashrc
 fi
+export result=`grep "history-search-backward" ~/.bashrc`
+if [ "$result" = "" ]; then
+	echo "bind '\"\e[A\": history-search-backward'" >> ~/.bashrc
+	echo "bind '\"\e[B\": history-search-forward'" >> ~/.bashrc
+fi
+source ~/.bashrc
 
 # Install only what's necessary to use ansible
 export LOG_FILE="/tmp/setup.log"
