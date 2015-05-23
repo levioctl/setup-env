@@ -23,6 +23,11 @@ git config --global alias.lg1 "log --graph --abbrev-commit --decorate --date=rel
 git config --global alias.lg2 "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 git config --global alias.lg \!"git lg1"
 
+echo "More bash configurations..." | tee -a $LOG_FILE
+if test 'grep "show-all-if-ambiguous" -q ~/.bashrc'; then
+	echo "bind 'set show-all-if-ambiguous on'" >> ~/.bashrc
+fi
+
 # Install only what's necessary to use ansible
 export LOG_FILE="/tmp/setup.log"
 INITIAL_PACKAGES="python python-dev python-setuptools openssh-server"
