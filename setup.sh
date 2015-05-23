@@ -17,6 +17,12 @@ for _param in $_params; do
 	fi
 done
 
+# Pretty git branch graphs
+echo "Configuring graphic logs in git..." | tee -a $LOG_FILE
+git config --global alias.lg1 "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
+git config --global alias.lg2 "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
+git config --global alias.lg \!"git lg1"
+
 # Install only what's necessary to use ansible
 export LOG_FILE="/tmp/setup.log"
 INITIAL_PACKAGES="python python-dev python-setuptools openssh-server"
