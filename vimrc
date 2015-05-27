@@ -26,3 +26,15 @@ set number
 "Exit insert more without delay
 set timeoutlen=0 ttimeoutlen=0
 colorscheme koehler
+
+"Mark the tildes as black, it's unnecessary as there are line numbers
+hi NonText guifg=black ctermfg=black
+
+"Always display the status bar
+set laststatus=2
+
+"DiffOrig command command that shows the difference from the file on disk
+command DiffOrig let g:diffline = line('.') | vert new | set bt=nofile | r # | 0d_ | diffthis | :exe "norm! ".g:diffline."G" | wincmd p | diffthis | wincmd p
+nnoremap <Leader>do :DiffOrig<cr>
+nnoremap <leader>dc :q<cr>:diffoff<cr>:exe "norm! ".g:diffline."G"<cr>
+hi Visual cterm=NONE  ctermbg=yellow ctermfg=white
