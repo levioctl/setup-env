@@ -25,7 +25,6 @@ set ignorecase
 set number
 "Exit insert more without delay
 set timeoutlen=0 ttimeoutlen=0
-colorscheme koehler
 
 "Mark the tildes as black, it's unnecessary as there are line numbers
 hi NonText guifg=black ctermfg=black
@@ -37,5 +36,8 @@ set laststatus=2
 command DiffOrig let g:diffline = line('.') | vert new | set bt=nofile | r # | 0d_ | diffthis | :exe "norm! ".g:diffline."G" | wincmd p | diffthis | wincmd p
 nnoremap <Leader>do :DiffOrig<cr>
 nnoremap <leader>dc :q<cr>:diffoff<cr>:exe "norm! ".g:diffline."G"<cr>
-hi Visual cterm=NONE  ctermbg=yellow ctermfg=white
-let g:ctrlp_working_path_mode=0
+
+"Colors
+colorscheme delek
+set t_Co=256
+hi Visual cterm=NONE  ctermbg=39 ctermfg=Black
