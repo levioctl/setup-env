@@ -10,7 +10,14 @@ set autoindent    " align the new line indent with the previous line
 cmap w!! w !sudo tee % >/dev/null
 
 "ctrl p
-set runtimepath^=~/.vim/bundle/ctrlp.vim
+set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll|pyc)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+
 "incremental search
 set incsearch
 "highlight search
@@ -39,5 +46,12 @@ nnoremap <leader>dc :q<cr>:diffoff<cr>:exe "norm! ".g:diffline."G"<cr>
 
 "Colors
 colorscheme delek
+hi Search cterm=NONE ctermfg=grey ctermbg=17
 set t_Co=256
 hi Visual cterm=NONE  ctermbg=39 ctermfg=Black
+
+"Key mappings
+noremap <C-h> gT
+noremap <C-l> gt
+noremap <C-j> <C-e>
+noremap <C-k> <C-y>
