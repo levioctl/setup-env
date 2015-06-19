@@ -6,4 +6,5 @@
   - yum: pkg=tmux state=installed update_cache=true
   - yum: pkg=firefox state=installed update_cache=true
   - yum: pkg=xclip state=installed update_cache=true
+  - pip: name=mock state=latest
 
