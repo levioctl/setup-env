@@ -2,6 +2,7 @@
   tasks:
   - yum: pkg=vim state=installed update_cache=true
   - yum: pkg=vim-X11 state=installed update_cache=true
+  - yum: pkg=ipython state=installed update_cache=true
   - yum: pkg=tmux state=installed update_cache=true
   - yum: pkg=firefox state=installed update_cache=true
   - yum: pkg=xclip state=installed update_cache=true
