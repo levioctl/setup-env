@@ -94,7 +94,9 @@ if [ ! -d "$HOME/.vim/bundle" ]; then
 fi
 if [ ! -d "$HOME/.vim/bundle/ctrlp.vim" ]; then
     git clone https://github.com/kien/ctrlp.vim.git ~/.vim/bundle/ctrlp.vim
-    git clone https://github.com/ivyl/vim-bling ~/.vim/bundle/ctrlp.vim
+fi
+if [ ! -d "$HOME/.vim/bundle/vim-bling" ]; then
+    git clone https://github.com/ivyl/vim-bling ~/.vim/bundle/vim-bling
 fi
 
 log "Done."
