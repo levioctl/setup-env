@@ -98,5 +98,8 @@ fi
 if [ ! -d "$HOME/.vim/bundle/vim-bling" ]; then
     git clone https://github.com/ivyl/vim-bling ~/.vim/bundle/vim-bling
 fi
+if [ ! -d "$HOME/.vim/bundle/grep" ]; then
+    git clone http://github.com/yegappan/grep ~/.vim/bundle/grep
+fi
 
 log "Done."
