@@ -55,3 +55,5 @@ noremap <C-h> gT
 noremap <C-l> gt
 noremap <C-j> <C-e>
 noremap <C-k> <C-y>
+vnoremap < <gv " better indentation
+vnoremap > >gv " better indentation
