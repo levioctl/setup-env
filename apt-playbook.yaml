@@ -8,4 +8,5 @@
   - apt: pkg=xclip state=installed update_cache=true
   - apt: pkg=cmatrix state=installed update_cache=true
   - pip: name=mock state=latest
+  - pip: name=pep8 state=latest
 
