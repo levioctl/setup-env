@@ -101,5 +101,8 @@ fi
 if [ ! -d "$HOME/.vim/bundle/grep" ]; then
     git clone http://github.com/yegappan/grep ~/.vim/bundle/grep
 fi
+if [ ! -d "$HOME/.vim/bundle/jedi-vim" ]; then
+    git clone https://github.com/davidhalter/jedi-vim ~/.vim/bundle/jedi-vim
+fi
 
 log "Done."

@@ -1,4 +1,3 @@
-filetype plugin indent on
 set colorcolumn=109
 set shiftwidth=4  " operation >> indents 4 columns; << unindents 4 columns
 set tabstop=4     " a hard TAB displays as 4 columns
@@ -13,7 +12,7 @@ cmap w!! w !sudo tee % >/dev/null
 set switchbuf+=usetab,newtab
 
 "ctrl p
-set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep
+set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/jedi-vim
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn)$',
@@ -28,13 +27,13 @@ set hlsearch
 "Press enter to remove search highlight
 nnoremap <silent> <ENTER> :noh<cr><esc>
 "Spell check
-":set spell spelllang=en_us
+set spell spelllang=en_us
 "Case insensitive search by default
 set ignorecase
 "Show line numbers
 set number
-"Exit insert more without delay
-set timeoutlen=0 ttimeoutlen=0
+""Exit insert more without delay
+set esckeys
 
 "Mark the tildes as black, it's unnecessary as there are line numbers
 hi NonText guifg=black ctermfg=black
@@ -63,6 +62,7 @@ noremap <C-j> <C-e>
 noremap <C-k> <C-y>
 vnoremap < <gv " better indentation
 vnoremap > >gv " better indentation
+noremap <C-i> I<C-[>
 
 "File explorer tree style
 let g:netrw_liststyle=3
@@ -74,3 +74,6 @@ let g:netrw_liststyle=3
 "In the quickfix window, <CR> is used to jump to the error under the
 "cursor, so undefine the mapping there.
 autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+
+let g:jedi#show_call_signatures = "1"
+let g:jedi#use_tabs_not_buffers = 1
