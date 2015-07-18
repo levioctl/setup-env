@@ -104,5 +104,8 @@ fi
 if [ ! -d "$HOME/.vim/bundle/jedi-vim" ]; then
     git clone https://github.com/davidhalter/jedi-vim ~/.vim/bundle/jedi-vim
 fi
+if [ ! -d "$HOME/.vim/bundle/vim-flake8" ]; then
+    git clone https://github.com/nvie/vim-flake8 ~/.vim/bundle/vim-flake8
+fi
 
 log "Done."

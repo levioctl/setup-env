@@ -12,7 +12,8 @@ cmap w!! w !sudo tee % >/dev/null
 set switchbuf+=usetab,newtab
 
 "ctrl p
-set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/jedi-vim
+set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/jedi-vim,~/.vim/bundle/vim-flake8
+
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/]\.(git|hg|svn)$',
