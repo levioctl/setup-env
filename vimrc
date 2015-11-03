@@ -13,7 +13,6 @@ set switchbuf+=usetab,newtab
 
 "ctrl p
 set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/jedi-vim,~/.vim/bundle/vim-flake8
-set runtimepath^=/home/joe/.vim/bundle/jedi-vim
 set omnifunc=jedi#completions
 
 let g:ctrlp_working_path_mode = 0
