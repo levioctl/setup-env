@@ -9,3 +9,4 @@
   - pip: name=mock state=latest
   - pip: name=pep8 state=latest
   - pip: name=jedi state=latest
+  - pip: name=flake8 state=latest
