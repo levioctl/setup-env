@@ -108,4 +108,10 @@ if [ ! -d "$HOME/.vim/bundle/vim-flake8" ]; then
     git clone https://github.com/nvie/vim-flake8 ~/.vim/bundle/vim-flake8
 fi
 
+log "Installing textual-switcher..."
+cd `mktemp -d`
+git clone https://github.com/followerofmammon/textual-switcher
+cd textual-switcher
+make install
+
 log "Done."
