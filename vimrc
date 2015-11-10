@@ -81,6 +81,7 @@ imap <C-h> <Left>
 imap <C-j> <Down>
 imap <C-k> <Up>
 imap <C-l> <Right>
+nnoremap <C-e> :Explore<CR>
 
 "File explorer tree style
 let g:netrw_liststyle = 3
