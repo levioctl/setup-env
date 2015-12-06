@@ -92,6 +92,10 @@ fi
 if [ ! -d "$HOME/.vim/bundle" ]; then
     mkdir ~/.vim/bundle
 fi
+if [ ! -d "$HOME/.vim/autoload" ]; then
+    mkdir ~/.vim/autoload
+    curl -LSso .vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+fi
 if [ ! -d "$HOME/.vim/bundle/ctrlp.vim" ]; then
     git clone https://github.com/kien/ctrlp.vim.git ~/.vim/bundle/ctrlp.vim
 fi

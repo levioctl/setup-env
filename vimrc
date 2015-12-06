@@ -11,8 +11,6 @@ cmap w!! w !sudo tee % >/dev/null
 "Switch-tab behavior
 set switchbuf+=usetab,newtab
 
-"ctrl p
-set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/jedi-vim,~/.vim/bundle/vim-flake8
 set omnifunc=jedi#completions
 
 let g:ctrlp_working_path_mode = 0
@@ -96,3 +94,5 @@ autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 
 let g:jedi#show_call_signatures = "1"
 let g:jedi#use_tabs_not_buffers = 1
+
+execute pathogen#infect()
