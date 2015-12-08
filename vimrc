@@ -60,7 +60,7 @@ nnoremap <Leader>do :DiffOrig<cr>
 nnoremap <leader>dc :q<cr>:diffoff<cr>:exe "norm! ".g:diffline."G"<cr>
 
 "Colors
-colorscheme delek
+colorscheme evening
 hi Search cterm=NONE ctermfg=grey ctermbg=17
 set t_Co=256
 hi Visual cterm=NONE  ctermbg=39 ctermfg=Black
@@ -101,3 +101,16 @@ let g:jedi#show_call_signatures = "1"
 let g:jedi#use_tabs_not_buffers = 1
 
 execute pathogen#infect()
+if has("gui_running")
+  if has("gui_gtk2")
+    set guifont=Courier\ New\ 15
+  elseif has("gui_photon")
+    set guifont=Courier\ New:s15
+  elseif has("gui_kde")
+    set guifont=Courier\ New/15/-1/5/50/0/0/0/1/0
+  elseif has("x11")
+    set guifont=-*-courier-medium-r-normal-*-*-180-*-*-m-*-*
+  else
+    set guifont=Courier_New:h15:cDEFAULT
+  endif
+endif
