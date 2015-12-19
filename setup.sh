@@ -118,4 +118,7 @@ git clone https://github.com/followerofmammon/textual-switcher
 cd textual-switcher
 make install
 
+log "Disabling visual effects in GNOME..."
+gsettings set org.gnome.desktop.interface enable-animations false
+
 log "Done."
