@@ -111,7 +111,9 @@ fi
 if [ ! -d "$HOME/.vim/bundle/vim-flake8" ]; then
     git clone https://github.com/nvie/vim-flake8 ~/.vim/bundle/vim-flake8
 fi
-
+log "Copying flake8 configuration file..."
+mkdir -p ~/.config
+cp {,~/.config/}flake8
 log "Installing textual-switcher..."
 cd `mktemp -d`
 git clone https://github.com/followerofmammon/textual-switcher
