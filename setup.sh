@@ -63,6 +63,11 @@ if [ "$result" = "" ]; then
 fi
 source $HOME/.bashrc || true
 
+export result=`grep "cd.." ~/.bashrc`
+if [ "$result" = "" ]; then
+    echo "alias cd..=\"cd ..\"" >> ~/.bashrc
+fi
+
 # Install only what's necessary to use ansible
 echo "Full log will be written to '$LOG_FILE'."
 for _package in $INITIAL_PACKAGES; do
