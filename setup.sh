@@ -61,6 +61,10 @@ if [ "$result" = "" ]; then
 	echo "bind '\"\e[A\": history-search-backward'" >> ~/.bashrc
 	echo "bind '\"\e[B\": history-search-forward'" >> ~/.bashrc
 fi
+export result=`grep "function dup " ~/.bashrc`
+if [ "$result" = "" ]; then
+	echo "function dup { echo -n \$1 | xclip -sel clip; }" >> ~/.bashrc
+fi
 source $HOME/.bashrc || true
 
 export result=`grep "cd.." ~/.bashrc`
