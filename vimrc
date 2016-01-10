@@ -61,7 +61,7 @@ nnoremap <Leader>do :DiffOrig<cr>
 nnoremap <leader>dc :q<cr>:diffoff<cr>:exe "norm! ".g:diffline."G"<cr>
 
 "Colors
-colorscheme evening
+colorscheme slate
 hi Search cterm=NONE ctermfg=grey ctermbg=17
 set t_Co=256
 hi Visual cterm=NONE  ctermbg=39 ctermfg=Black
