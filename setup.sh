@@ -95,6 +95,8 @@ log "Copying tmux configuration file..."
 cp {,~/.}tmux.conf
 log "Configuring VIM..."
 cp {,~/.}vimrc
+log "Configuring Vrapper..."
+cp {,~/.}vrapperrc
 if [ ! -d "$HOME/.vim" ]; then
     mkdir ~/.vim
 fi
