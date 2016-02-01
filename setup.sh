@@ -134,4 +134,8 @@ make install
 log "Disabling visual effects in GNOME..."
 gsettings set org.gnome.desktop.interface enable-animations false
 
+log "Disabling whoopsie in case it exists..."
+sudo systemctl stop whoopsie || true
+sudo systemctl disable whoopsie || true
+
 log "Done."
