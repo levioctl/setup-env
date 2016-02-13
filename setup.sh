@@ -133,9 +133,14 @@ make install
 
 log "Disabling visual effects in GNOME..."
 gsettings set org.gnome.desktop.interface enable-animations false
+dconf write /org/gnome/settings-daemon/plugins/remote-display/active false
+dconf write /org/gnome/desktop/interface/enable-animations false
 
 log "Disabling whoopsie in case it exists..."
 sudo systemctl stop whoopsie || true
 sudo systemctl disable whoopsie || true
 
 log "Done."
+log "Stuff to do manually:"
+log "* Install the no-topleft corner GNOME plugin"
+log "* Enable the places status indicator GNOME plugin"
