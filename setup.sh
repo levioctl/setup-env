@@ -140,6 +140,9 @@ log "Disabling whoopsie in case it exists..."
 sudo systemctl stop whoopsie || true
 sudo systemctl disable whoopsie || true
 
+log "Disabling lockscreen..."
+dconf write /org/gnome/desktop/lockdown/disable-lock-screen true
+
 log "Done."
 log "Stuff to do manually:"
 log "* Install the no-topleft corner GNOME plugin"
