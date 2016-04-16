@@ -82,10 +82,10 @@ imap <C-k> <Up>
 imap <C-l> <Right>
 nnoremap <C-e> :Explore<CR>
 "Scroll the autocompletion list
-:inoremap <expr> j pumvisible() ? '<C-n>' : 'j'
-:inoremap <expr> k pumvisible() ? '<C-p>' : 'k'
-:inoremap <expr> <C-d> pumvisible() ? 'j' : <C-d>
-:inoremap <expr> <C-u> pumvisible() ? 'j' : <C-u>
+inoremap <expr> j pumvisible() ? '<C-n>' : 'j'
+inoremap <expr> k pumvisible() ? '<C-p>' : 'k'
+inoremap <expr> <C-d> pumvisible() ? 'j' : <C-d>
+inoremap <expr> <C-u> pumvisible() ? 'j' : <C-u>
 
 "File explorer tree style
 let g:netrw_liststyle = 3
