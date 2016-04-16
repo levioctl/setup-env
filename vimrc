@@ -86,6 +86,10 @@ inoremap <expr> j pumvisible() ? '<C-n>' : 'j'
 inoremap <expr> k pumvisible() ? '<C-p>' : 'k'
 inoremap <expr> <C-d> pumvisible() ? 'j' : <C-d>
 inoremap <expr> <C-u> pumvisible() ? 'j' : <C-u>
+map - <C-W>-
+map = <C-W>+
+map _ <C-W><
+map + <C-W>>
 
 "File explorer tree style
 let g:netrw_liststyle = 3
