@@ -4,11 +4,11 @@
 YUM_CMD=$(which yum)
 APT_GET_CMD=$(which apt-get)
 if [[ ! -z $YUM_CMD ]]; then
-INITIAL_PACKAGES="python python-devel python-setuptools openssh-server"
+INITIAL_PACKAGES="python python-devel python-setuptools openssh-server curl"
 PKG_MGR_CMD="sudo yum install -y"
 ANSIBLE_PLAYBOOK_FILE="yum-playbook.yaml"
 elif [[ ! -z $APT_GET_CMD ]]; then
-INITIAL_PACKAGES="python python-dev python-setuptools openssh-server"
+INITIAL_PACKAGES="python python-dev python-setuptools openssh-server curl"
 PKG_MGR_CMD="sudo apt install -y"
 ANSIBLE_PLAYBOOK_FILE="apt-playbook.yaml"
 else
