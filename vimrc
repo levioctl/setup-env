@@ -11,7 +11,7 @@ cmap w!! w !sudo tee % >/dev/null
 "Switch-tab behavior
 set switchbuf+=usetab,newtab
 
-set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/jedi-vim,~/.vim/bundle/vim-flake8
+set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/jedi-vim,~/.vim/bundle/vim-flake8,~/.vim/bundle/vim-surround
 set omnifunc=jedi#completions
 
 let g:ctrlp_working_path_mode = 0
