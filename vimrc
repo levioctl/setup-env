@@ -90,6 +90,7 @@ map - <C-W>-
 map = <C-W>+
 map _ <C-W><
 map + <C-W>>
+noremap Q <Nop>
 
 "File explorer tree style
 let g:netrw_liststyle = 3
