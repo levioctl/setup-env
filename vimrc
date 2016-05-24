@@ -120,3 +120,5 @@ if has("gui_running")
     set guifont=Courier_New:h15:cDEFAULT
   endif
 endif
+
+set relativenumber
