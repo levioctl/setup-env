@@ -43,6 +43,7 @@ nnoremap <silent> <ENTER> :noh<cr><esc>
 "highlight SpellLocal term=underline cterm=underline
 "Case insensitive search by default
 set ignorecase
+set smartcase
 "Show line numbers
 set number
 ""Exit insert more without delay
