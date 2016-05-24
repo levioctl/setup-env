@@ -92,6 +92,9 @@ map = <C-W>+
 map _ <C-W><
 map + <C-W>>
 noremap Q <Nop>
+"Use Tab instead of %
+nnoremap <tab> %
+vnoremap <tab> %
 
 "File explorer tree style
 let g:netrw_liststyle = 3
