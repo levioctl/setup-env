@@ -11,7 +11,7 @@ cmap w!! w !sudo tee % >/dev/null
 "Switch-tab behavior
 set switchbuf+=usetab,newtab
 
-set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/jedi-vim,~/.vim/bundle/vim-flake8,~/.vim/bundle/vim-surround
+set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/jedi-vim,~/.vim/bundle/vim-flake8,~/.vim/bundle/vim-surround,~/.vim/bundle/rainbow_parentheses.vim
 set omnifunc=jedi#completions
 
 let g:ctrlp_working_path_mode = 0
@@ -95,17 +95,20 @@ noremap Q <Nop>
 "Use Tab instead of %
 nnoremap <tab> %
 vnoremap <tab> %
-
-"File explorer tree style
-let g:netrw_liststyle = 3
+autocmd FileType python map <buffer> <Leader>f :call Flake8()<CR>
 
 "Use ctrl-f to put the search-replace pattern in the command line, with the
 "word under the cursor as the replaced string
-:nnoremap <C-f> :%s/\<<C-r><C-w>\>//g<Left><Left>
+nnoremap <C-f> :%s/\<<C-r><C-w>\>//g<Left><Left>
 
 "In the quickfix window, <CR> is used to jump to the error under the
 "cursor, so undefine the mapping there.
 autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+
+noremap <Leader>c :ccl<Enter>
+
+"File explorer tree style
+let g:netrw_liststyle = 3
 
 let g:jedi#show_call_signatures = "1"
 let g:jedi#use_tabs_not_buffers = 1
@@ -126,3 +129,9 @@ if has("gui_running")
 endif
 
 set relativenumber
+
+"Rainbow-parentheses
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
