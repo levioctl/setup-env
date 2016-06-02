@@ -16,7 +16,7 @@ set omnifunc=jedi#completions
 
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.git|\.hg|\.svn|.connections|build)$',
+  \ 'dir':  '\v[\/](\.git|\.hg|\.svn|.o|.connections|build)$',
   \ 'file': '\v\.(exe|so|dll|pyc|stratolog)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
@@ -62,7 +62,7 @@ nnoremap <Leader>do :DiffOrig<cr>
 nnoremap <leader>dc :q<cr>:diffoff<cr>:exe "norm! ".g:diffline."G"<cr>
 
 "Colors
-colorscheme slate
+colorscheme default
 hi Search cterm=NONE ctermfg=grey ctermbg=17
 set t_Co=256
 hi Visual cterm=NONE  ctermbg=39 ctermfg=Black
@@ -72,8 +72,8 @@ set cursorline
 "Key mappings
 noremap <C-h> gT
 noremap <C-l> gt
-noremap <C-j> <C-e>
-noremap <C-k> <C-y>
+noremap <C-j> :/^\(\s\s\s\s\)*\(class\\|def\)\s<Enter>:noh<Enter>
+noremap <C-k> :?^\(\s\s\s\s\)*\(class\\|def\)\s<Enter>:noh<Enter>
 vnoremap < <gv " better indentation
 vnoremap > >gv " better indentation
 nnoremap <C-c> :set cursorline!<CR>
@@ -81,7 +81,7 @@ imap <C-h> <Left>
 imap <C-j> <Down>
 imap <C-k> <Up>
 imap <C-l> <Right>
-nnoremap <C-e> :Explore<CR>
+nnoremap <C-e> :tabedit<Enter>:Explore<CR>
 "Scroll the autocompletion list
 inoremap <expr> j pumvisible() ? '<C-n>' : 'j'
 inoremap <expr> k pumvisible() ? '<C-p>' : 'k'
@@ -116,16 +116,17 @@ let g:jedi#use_tabs_not_buffers = 1
 "execute pathogen#infect()
 if has("gui_running")
   if has("gui_gtk2")
-    set guifont=Courier\ New\ 15
+    set guifont=FreeMono\ 15
   elseif has("gui_photon")
-    set guifont=Courier\ New:s15
+    set guifont=FreeMono:s15
   elseif has("gui_kde")
-    set guifont=Courier\ New/15/-1/5/50/0/0/0/1/0
+    set guifont=FreeMono/15/-1/5/50/0/0/0/1/0
   elseif has("x11")
-    set guifont=-*-courier-medium-r-normal-*-*-180-*-*-m-*-*
+    set guifont=-*-freemono-medium-r-normal-*-*-180-*-*-m-*-*
   else
-    set guifont=Courier_New:h15:cDEFAULT
+    set guifont=FreeMono:h15:cDEFAULT
   endif
+  colorscheme elflord
 endif
 
 set relativenumber
