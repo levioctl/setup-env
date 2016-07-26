@@ -139,6 +139,9 @@ gsettings set org.gnome.desktop.interface enable-animations false
 dconf write /org/gnome/settings-daemon/plugins/remote-display/active false
 dconf write /org/gnome/desktop/interface/enable-animations false
 
+log "Setting items list view as default in Nautilus..."
+gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view'
+
 log "Disabling whoopsie in case it exists..."
 sudo systemctl stop whoopsie || true
 sudo systemctl disable whoopsie || true
