@@ -96,6 +96,8 @@ noremap Q <Nop>
 nnoremap <tab> %
 vnoremap <tab> %
 autocmd FileType python map <buffer> <Leader>f :call Flake8()<CR>
+" Ctrl-t to open a new tab
+nnoremap <C-t> :tabedit<CR>
 
 "Use ctrl-f to put the search-replace pattern in the command line, with the
 "word under the cursor as the replaced string
