@@ -152,6 +152,9 @@ dconf write /org/gnome/desktop/lockdown/disable-lock-screen true
 log "Disabling the Caps Lock button..."
 xmodmap -e "keycode 66 = Shift_L NoSymbol Shift_L" || true
 
+log "Making sure rhythmbox is not installed..."
+sudo apt-get remove rhythmbox || true
+
 log "Done."
 log "Stuff to do manually:"
 log "* Install the no-topleft corner GNOME plugin"
