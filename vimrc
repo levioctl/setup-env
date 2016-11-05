@@ -122,24 +122,6 @@ let g:netrw_liststyle = 3
 let g:jedi#show_call_signatures = "1"
 let g:jedi#use_tabs_not_buffers = 1
 
-"execute pathogen#infect()
-if has("gui_running")
-  if has("gui_gtk2")
-    set guifont=FreeMono\ 15
-  elseif has("gui_photon")
-    set guifont=FreeMono:s15
-  elseif has("gui_kde")
-    set guifont=FreeMono/15/-1/5/50/0/0/0/1/0
-  elseif has("x11")
-    set guifont=-*-freemono-medium-r-normal-*-*-180-*-*-m-*-*
-  else
-    set guifont=FreeMono:h15:cDEFAULT
-  endif
-  colorscheme elflord
-endif
-
-set relativenumber
-
 "Rainbow-parentheses
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
