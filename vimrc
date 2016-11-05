@@ -73,10 +73,14 @@ hi CursorLine cterm=NONE,underline
 set cursorline
 
 "Key mappings
+execute "set <M-j>=\ej"
+execute "set <M-k>=\ek"
 noremap <C-h> gT
 noremap <C-l> gt
-noremap <C-j> :/^\(\s\s\s\s\)*\(class\\|def\)\s<Enter>:noh<Enter>
-noremap <C-k> :?^\(\s\s\s\s\)*\(class\\|def\)\s<Enter>:noh<Enter>
+noremap <C-j> <C-e>
+noremap <C-k> <C-y>
+noremap <M-j> :/^\(\s\s\s\s\)*\(class\\|def\)\s<Enter>:noh<Enter>
+noremap <M-k> :?^\(\s\s\s\s\)*\(class\\|def\)\s<Enter>:noh<Enter>
 vnoremap < <gv " better indentation
 vnoremap > >gv " better indentation
 nnoremap <C-c> :set cursorline!<CR>
