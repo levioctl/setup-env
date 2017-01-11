@@ -26,6 +26,7 @@ let g:ctrlp_custom_ignore = {
 let g:ctrlp_max_files=300000
 let g:ctrlp_use_caching = 1
 let g:ctrlp_cache_dir = "/tmp"
+let g:ctrlp_switch_buffer = 't'
 
 
 "incremental search
