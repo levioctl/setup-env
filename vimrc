@@ -152,3 +152,5 @@ function TabsOrSpaces()
     endif
 endfunction
 autocmd BufReadPost * call TabsOrSpaces()
+colorscheme default
+set completeopt=longest,menuone
