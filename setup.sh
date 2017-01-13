@@ -135,6 +135,9 @@ fi
 if [ ! -d "$HOME/.vim/bundle/vim-fugitive" ]; then
     git clone https://github.com/tpope/vim-fugitive ~/.vim/bundle/vim-fugitive
 fi
+if [ ! -d "$HOME/.vim/bundle/supertab" ]; then
+    git clone https://github.com/ervandew/supertab ~/.vim/bundle/supertab
+fi
 log "Making sure VIM has python support..."
 # taken from http://askubuntu.com/questions/775059/vim-python-support-on-ubuntu-16-04
 add-apt-repository -y ppa:pi-rho/dev
