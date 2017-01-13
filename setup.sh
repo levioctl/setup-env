@@ -125,6 +125,12 @@ fi
 if [ ! -d "$HOME/.vim/bundle/vim-surround" ]; then
     git clone https://github.com/nvie/vim-surround ~/.vim/bundle/vim-surround
 fi
+if [ ! -d "$HOME/.vim/bundle/rainbow_parentheses" ]; then
+    git clone https://github.com/kien/rainbow_parentheses.vim ~/.vim/bundle/rainbow_parentheses
+fi
+if [ ! -d "$HOME/.vim/bundle/vim-fugitive" ]; then
+    git clone https://github.com/tpope/vim-fugitive ~/.vim/bundle/vim-fugitive
+fi
 log "Making sure VIM has python support..."
 # taken from http://askubuntu.com/questions/775059/vim-python-support-on-ubuntu-16-04
 add-apt-repository -y ppa:pi-rho/dev
