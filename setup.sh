@@ -103,6 +103,9 @@ fi
 if [ ! -d "$HOME/.vim/bundle" ]; then
     mkdir ~/.vim/bundle
 fi
+if [ ! -d "$HOME/.vim/after" ]; then
+    mkdir ~/.vim/after
+fi
 if [ ! -d "$HOME/.vim/autoload" ]; then
     mkdir ~/.vim/autoload
     curl -LSso .vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
@@ -118,6 +121,7 @@ if [ ! -d "$HOME/.vim/bundle/grep" ]; then
 fi
 if [ ! -d "$HOME/.vim/bundle/jedi-vim" ]; then
     git clone https://github.com/davidhalter/jedi-vim ~/.vim/bundle/jedi-vim
+    cp -rf ~/.vim/bundle/jedi-vim/after/* ~/.vim/after/
 fi
 if [ ! -d "$HOME/.vim/bundle/vim-flake8" ]; then
     git clone https://github.com/nvie/vim-flake8 ~/.vim/bundle/vim-flake8
