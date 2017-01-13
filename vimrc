@@ -8,13 +8,14 @@ set autoindent    " align the new line indent with the previous line
 "Continuation line:
 set cindent
 set cinoptions=(0,u0,U0
+syntax enable
 
 cmap w!! w !sudo tee % >/dev/null
 
 "Switch-tab behavior
 set switchbuf+=usetab,newtab
 
-set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/jedi-vim,~/.vim/bundle/vim-flake8,~/.vim/bundle/vim-surround,~/.vim/bundle/rainbow_parentheses.vim
+set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/vim-flake8,~/.vim/bundle/vim-surround,~/.vim/bundle/rainbow_parentheses.vim,~/.vim/bundle/bufexplorer.vim,~/.vim/bundle/jedi-vim,~/.vim/bundle/vim-fugitive
 set omnifunc=jedi#completions
 
 let g:ctrlp_working_path_mode = 0
@@ -66,11 +67,17 @@ nnoremap <Leader>do :DiffOrig<cr>
 nnoremap <leader>dc :q<cr>:diffoff<cr>:exe "norm! ".g:diffline."G"<cr>
 
 "Colors
-autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
-colorscheme default
-hi Search cterm=NONE ctermfg=grey ctermbg=17
-set t_Co=256
-hi Visual cterm=NONE  ctermbg=39 ctermfg=Black
+if has('gui_running')
+  colorscheme koehler
+  set guifont=FreeMono\ 14
+else
+  autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+  colorscheme default
+  hi Search cterm=NONE ctermfg=grey ctermbg=16
+  set t_Co=256
+  hi Visual cterm=NONE  ctermbg=39 ctermfg=Black
+endif
+
 hi CursorLine cterm=NONE,underline
 set cursorline
 
@@ -79,8 +86,8 @@ noremap <C-h> gT
 noremap <C-l> gt
 noremap <C-j> <C-e>
 noremap <C-k> <C-y>
-noremap <S-j> :/^\(\s\s\s\s\)*\(class\\|def\)\s<Enter>:noh<Enter>:<Enter>
-noremap <S-k> :?^\(\s\s\s\s\)*\(class\\|def\)\s<Enter>:noh<Enter>:<Enter>
+noremap <S-j> :/^\(\s\s\s\s\)*\(class\\|def\)\s<Enter>:noh<Enter>:<Enter>w
+map <S-k> :?^\(\s\s\s\s\)*\(class\\|def\)\s<Enter>:noh<Enter>:<Enter>w
 vnoremap < <gv " better indentation
 vnoremap > >gv " better indentation
 nnoremap <C-c> :set cursorline!<CR>
