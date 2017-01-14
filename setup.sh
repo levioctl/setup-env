@@ -1,21 +1,40 @@
 #!/bin/bash
 
 # Determine package manager
-YUM_CMD=$(which yum)
-APT_GET_CMD=$(which apt-get)
-if [[ ! -z $YUM_CMD ]]; then
-INITIAL_PACKAGES="python python-devel python-setuptools openssh-server curl"
-PKG_MGR_CMD="sudo yum install -y"
-ANSIBLE_PLAYBOOK_FILE="yum-playbook.yaml"
-elif [[ ! -z $APT_GET_CMD ]]; then
-INITIAL_PACKAGES="python python-dev python-setuptools openssh-server curl"
-PKG_MGR_CMD="sudo apt install -y"
-ANSIBLE_PLAYBOOK_FILE="apt-playbook.yaml"
+COMMON_PACKAGES="python python-setuptools tmux ipython firefox xclip sshpass curl openssh-server"
+OS=`grep ^NAME /etc/os-release | cut -d '=' -f 2`
+OS=`sed -e 's/^"//' -e 's/"$//' <<<"$OS"`
+if [ "$OS" = "Fedora" ]
+then
+    PACKAGES="
+        python-devel
+        vim
+        vim-X11
+    "
+    PKG_MGR_CMD="sudo yum install -y"
+elif [ "$OS" = "Ubuntu" ]
+then
+    PACKAGES="
+        python-dev
+        vim-gtk
+        vim-gui-common
+        cmatrix
+    "
+    PKG_MGR_CMD="sudo apt install -y"
+    # The following repo is required for vim-gtk
+    # taken from http://askubuntu.com/questions/775059/vim-python-support-on-ubuntu-16-04
+    sudo add-apt-repository -y ppa:pi-rho/dev
+    sudo apt-get -y update
 else
     echo "Error: Package manager was not found."
     exit 1;
 fi
-
+PIP_PACKAGES="
+    mock
+    pep8
+    jedi
+    flake8
+"
 export LOG_FILE="/tmp/setup.log"
 
 echo "Run this without 'source'."
@@ -27,6 +46,7 @@ function log {
 }
 
 function exe-and-log-debug {
+	echo $1 | tee -a $LOG_FILE
 	$1 &>> $LOG_FILE
 }
 
@@ -72,31 +92,25 @@ if [ "$result" = "" ]; then
     echo "alias cd..=\"cd ..\"" >> ~/.bashrc
 fi
 
-# Install only what's necessary to use ansible
 echo "Full log will be written to '$LOG_FILE'."
-for _package in $INITIAL_PACKAGES; do
-	log "Installing $_package"
+for _package in $COMMON_PACKAGES $PACKAGES; do
+	log "Installing package '$_package'..."
 	exe-and-log-debug "$PKG_MGR_CMD $_package"
 done
 log "Installing pip..."
 exe-and-log-debug "sudo easy_install pip"
-log "Installing ansible..."
-exe-and-log-debug "sudo pip install ansible"
+for _package in $PIP_PACKAGES; do
+	log "Installing PIP package '$_package'..."
+	exe-and-log-debug "pip install $_package --upgrade"
+done
 
-# Ansible's hosts file
-sudo mkdir /etc/ansible || true
-log "Creating Ansible's hosts file..."
-sudo sh -c 'echo "[local]\n127.0.0.1" > /etc/ansible/hosts ansible_connection=local'
-
-log "Installing packages using ansible..."
-exe-and-log-debug "sudo ansible-playbook -s $ANSIBLE_PLAYBOOK_FILE -vvvvv"
-
-log "Copying tmux configuration file..."
+log "Configuring tmux"
 cp {,~/.}tmux.conf
 log "Configuring VIM..."
 cp {,~/.}vimrc
 log "Configuring Vrapper..."
 cp {,~/.}vrapperrc
+
 if [ ! -d "$HOME/.vim" ]; then
     mkdir ~/.vim
 fi
@@ -138,11 +152,6 @@ fi
 if [ ! -d "$HOME/.vim/bundle/supertab" ]; then
     git clone https://github.com/ervandew/supertab ~/.vim/bundle/supertab
 fi
-log "Making sure VIM has python support..."
-# taken from http://askubuntu.com/questions/775059/vim-python-support-on-ubuntu-16-04
-add-apt-repository -y ppa:pi-rho/dev
-apt-get -y update
-apt-get install -y vim-gtk
 
 log "Copying flake8 configuration file..."
 mkdir -p ~/.config
