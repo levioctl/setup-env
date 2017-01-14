@@ -120,38 +120,29 @@ fi
 if [ ! -d "$HOME/.vim/after" ]; then
     mkdir ~/.vim/after
 fi
-if [ ! -d "$HOME/.vim/autoload" ]; then
-    mkdir ~/.vim/autoload
-    curl -LSso .vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-fi
-if [ ! -d "$HOME/.vim/bundle/ctrlp.vim" ]; then
-    git clone https://github.com/kien/ctrlp.vim.git ~/.vim/bundle/ctrlp.vim
-fi
-if [ ! -d "$HOME/.vim/bundle/vim-bling" ]; then
-    git clone https://github.com/ivyl/vim-bling ~/.vim/bundle/vim-bling
-fi
-if [ ! -d "$HOME/.vim/bundle/grep" ]; then
-    git clone http://github.com/yegappan/grep ~/.vim/bundle/grep
-fi
-if [ ! -d "$HOME/.vim/bundle/jedi-vim" ]; then
-    git clone https://github.com/davidhalter/jedi-vim ~/.vim/bundle/jedi-vim
+
+function install-vim-plugin {
+    PLUGIN_DIR="$HOME/.vim/bundle/ctrlp.vim"
+    if [ ! -d "$PLUGIN_DIR" ]; then
+        git clone https://github.com/$1/$2 ~/.vim/bundle/$2
+    else
+        exe-and-log-debug "cd $PLUGIN_DIR"
+        exe-and-log-debug "git fetch origin"
+        exe-and-log-debug "git checkout -f origin/master"
+        exe-and-log-debug "cd -"
+    fi
     cp -rf ~/.vim/bundle/jedi-vim/after/* ~/.vim/after/
-fi
-if [ ! -d "$HOME/.vim/bundle/vim-flake8" ]; then
-    git clone https://github.com/nvie/vim-flake8 ~/.vim/bundle/vim-flake8
-fi
-if [ ! -d "$HOME/.vim/bundle/vim-surround" ]; then
-    git clone https://github.com/nvie/vim-surround ~/.vim/bundle/vim-surround
-fi
-if [ ! -d "$HOME/.vim/bundle/rainbow_parentheses" ]; then
-    git clone https://github.com/kien/rainbow_parentheses.vim ~/.vim/bundle/rainbow_parentheses
-fi
-if [ ! -d "$HOME/.vim/bundle/vim-fugitive" ]; then
-    git clone https://github.com/tpope/vim-fugitive ~/.vim/bundle/vim-fugitive
-fi
-if [ ! -d "$HOME/.vim/bundle/supertab" ]; then
-    git clone https://github.com/ervandew/supertab ~/.vim/bundle/supertab
-fi
+}
+
+install-vim-plugin kien ctrlp.vim
+install-vim-plugin ivyl vim-bling
+install-vim-plugin yegappan grep
+install-vim-plugin davidhalter jedi-vim
+install-vim-plugin nvie vim-flake8
+install-vim-plugin nvie vim-surround
+install-vim-plugin kien rainbow_parentheses
+install-vim-plugin tpope vim-fugitive
+install-vim-plugin ervandew supertab
 
 log "Copying flake8 configuration file..."
 mkdir -p ~/.config
