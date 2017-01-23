@@ -69,7 +69,7 @@ nnoremap <leader>dc :q<cr>:diffoff<cr>:exe "norm! ".g:diffline."G"<cr>
 "Colors
 if has('gui_running')
   colorscheme koehler
-  set guifont=FreeMono\ 14
+  set guifont=FreeMono\ 15
 else
   autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
   colorscheme default
