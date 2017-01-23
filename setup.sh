@@ -111,15 +111,9 @@ cp {,~/.}vimrc
 log "Configuring Vrapper..."
 cp {,~/.}vrapperrc
 
-if [ ! -d "$HOME/.vim" ]; then
-    mkdir ~/.vim
-fi
-if [ ! -d "$HOME/.vim/bundle" ]; then
-    mkdir ~/.vim/bundle
-fi
-if [ ! -d "$HOME/.vim/after" ]; then
-    mkdir ~/.vim/after
-fi
+mkdir -p ~/.vim
+mkdir -p ~/.vim/bundle
+mkdir -p ~/.vim/after
 
 function install-vim-plugin {
     PLUGIN_DIR="$HOME/.vim/bundle/ctrlp.vim"
@@ -131,7 +125,7 @@ function install-vim-plugin {
         exe-and-log-debug "git checkout -f origin/master"
         exe-and-log-debug "cd -"
     fi
-    cp -rf ~/.vim/bundle/jedi-vim/after/* ~/.vim/after/
+    cp -rf ~/.vim/bundle/$2/after/* ~/.vim/after/
 }
 
 install-vim-plugin kien ctrlp.vim
