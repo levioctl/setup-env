@@ -146,6 +146,11 @@ cd `mktemp -d`
 git clone https://github.com/followerofmammon/textual-switcher
 cd textual-switcher
 make install
+log "Installing workspaces"
+cd `mktemp -d`
+git clone https://github.com/followerofmammon/workspaces
+cd workspaces
+make
 
 log "Disabling visual effects in GNOME..."
 gsettings set org.gnome.desktop.interface enable-animations false
