@@ -15,7 +15,7 @@ cmap w!! w !sudo tee % >/dev/null
 "Switch-tab behavior
 set switchbuf+=usetab,newtab
 
-set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/vim-flake8,~/.vim/bundle/vim-surround,~/.vim/bundle/rainbow_parentheses.vim,~/.vim/bundle/bufexplorer.vim,~/.vim/bundle/jedi-vim,~/.vim/bundle/vim-fugitive,~/.vim/bundle/supertab
+set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/vim-flake8,~/.vim/bundle/vim-surround,~/.vim/bundle/rainbow_parentheses.vim,~/.vim/bundle/bufexplorer.vim,~/.vim/bundle/jedi-vim,~/.vim/bundle/vim-fugitive,~/.vim/bundle/supertab,~/.vim/bundle/pyflakes-vim,~/.vim/bundle/nerdtree
 set omnifunc=jedi#completions
 
 let g:ctrlp_working_path_mode = 0
@@ -122,6 +122,9 @@ nnoremap <C-f> :%s/\<<C-r><C-w>\>//g<Left><Left>
 autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 
 noremap <Leader>c :ccl<Enter>
+
+map <C-e> :NERDTreeToggle<cr>
+map <Leader>e :NERDTreeFind<cr>
 
 "File explorer tree style
 let g:netrw_liststyle = 3

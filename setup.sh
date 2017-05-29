@@ -137,6 +137,8 @@ install-vim-plugin nvie vim-surround
 install-vim-plugin kien rainbow_parentheses
 install-vim-plugin tpope vim-fugitive
 install-vim-plugin ervandew supertab
+install-vim-plugin kevinw pyflakes-vim
+install-vim-plugin scrooloose nerdtree
 
 log "Copying flake8 configuration file..."
 mkdir -p ~/.config
