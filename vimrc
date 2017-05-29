@@ -21,7 +21,7 @@ set omnifunc=jedi#completions
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\v[\/](\.git|\.hg|\.svn|.o|.connections|build)$',
-  \ 'file': '\v\.(exe|so|dll|pyc|stratolog)$',
+  \ 'file': '\v\.(exe|so|dll|pyc|stratolog|logs.racktest)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
 let g:ctrlp_max_files=300000
