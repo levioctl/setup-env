@@ -116,7 +116,7 @@ mkdir -p ~/.vim/bundle
 mkdir -p ~/.vim/after
 
 function install-vim-plugin {
-    PLUGIN_DIR="$HOME/.vim/bundle/ctrlp.vim"
+    PLUGIN_DIR="$HOME/.vim/bundle/$2"
     if [ ! -d "$PLUGIN_DIR" ]; then
         git clone https://github.com/$1/$2 ~/.vim/bundle/$2
     else
