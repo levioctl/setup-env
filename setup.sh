@@ -12,6 +12,7 @@ then
         vim-X11
         cmake
         llvm
+        gcc
     "
     PKG_MGR_CMD="sudo yum install -y"
     SERVICE_FILES_DIR=/usr/lib/systemd/system/
@@ -24,6 +25,7 @@ then
         cmatrix
         cmake
         llvm
+        gcc
     "
     PKG_MGR_CMD="sudo apt install -y"
     SERVICE_FILES_DIR=/lib/systemd/system/
@@ -71,133 +73,124 @@ for _param in $_params; do
 done
 
 
-## Pretty git branch graphs
-#log "Configuring graphic logs in git..."
-#git config --global alias.lg1 "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
-#git config --global alias.lg2 "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
-#git config --global alias.lg \!"git lg1"
-#
-#log "More bash configurations..."
-#export result=`grep "show-all-if-ambiguous" ~/.bashrc`
-#if [ "$result" = "" ]; then
-#	echo "bind 'set show-all-if-ambiguous on'" >> ~/.bashrc
-#fi
-#export result=`grep "history-search-backward" ~/.bashrc`
-#if [ "$result" = "" ]; then
-#	echo "bind '\"\e[A\": history-search-backward'" >> ~/.bashrc
-#	echo "bind '\"\e[B\": history-search-forward'" >> ~/.bashrc
-#fi
-#export result=`grep "function dup " ~/.bashrc`
-#if [ "$result" = "" ]; then
-#	echo "function dup { echo -n \$1 | xclip -sel clip; }" >> ~/.bashrc
-#fi
-#source $HOME/.bashrc || true
-#
-#export result=`grep "cd.." ~/.bashrc`
-#if [ "$result" = "" ]; then
-#    echo "alias cd..=\"cd ..\"" >> ~/.bashrc
-#fi
-#
-#echo "Full log will be written to '$LOG_FILE'."
-#for _package in $COMMON_PACKAGES $PACKAGES; do
-#	log "Installing package '$_package'..."
-#	exe-and-log-debug "$PKG_MGR_CMD $_package"
-#done
-#log "Installing pip..."
-#exe-and-log-debug "sudo easy_install pip"
-#for _package in $PIP_PACKAGES; do
-#	log "Installing PIP package '$_package'..."
-#	exe-and-log-debug "sudo pip install $_package --upgrade"
-#done
-#
-#log "Configuring tmux"
-#cp {,~/.}tmux.conf
-#log "Configuring VIM..."
-#cp {,~/.}vimrc
-#log "Configuring Vrapper..."
-#cp {,~/.}vrapperrc
-#
-#mkdir -p ~/.vim
-#mkdir -p ~/.vim/bundle
-#mkdir -p ~/.vim/after
-#
-#function install-vim-plugin {
-#    PLUGIN_DIR="$HOME/.vim/bundle/$2"
-#    if [ ! -d "$PLUGIN_DIR" ]; then
-#        git clone https://github.com/$1/$2 ~/.vim/bundle/$2
-#    else
-#        exe-and-log-debug "cd $PLUGIN_DIR"
-#        exe-and-log-debug "git fetch origin"
-#        exe-and-log-debug "git checkout -f origin/master"
-#        exe-and-log-debug "cd -"
-#    fi
-#    cp -rf ~/.vim/bundle/$2/after/* ~/.vim/after/ || true
-#}
-#
-#install-vim-plugin kien ctrlp.vim
-#install-vim-plugin ivyl vim-bling
-#install-vim-plugin yegappan grep
-#install-vim-plugin davidhalter jedi-vim
-#install-vim-plugin nvie vim-flake8
-#install-vim-plugin nvie vim-surround
-#install-vim-plugin kien rainbow_parentheses.vim
-#install-vim-plugin tpope vim-fugitive
-#install-vim-plugin ervandew supertab
-#install-vim-plugin kevinw pyflakes-vim
-#install-vim-plugin scrooloose nerdtree
-#install-vim-plugin lyuts vim-rtags
-#
-#log "Copying flake8 configuration file..."
-#mkdir -p ~/.config
-#cp {,~/.config/}flake8
-#log "Installing textual-switcher..."
-#if [ ! -d textual-switcher ]; then
-#    git clone https://github.com/followerofmammon/textual-switcher
-#fi
-#cd textual-switcher
-#git pull
-#make install
-#cd -
-#
-#log "Installing workspaces"
-#if [ ! -d workspaces ]; then
-#    git clone https://github.com/followerofmammon/workspaces
-#fi
-#cd workspaces
-#git pull
-#/bin/bash ./setup-no-activate.sh
-#cd -
-#
+# Pretty git branch graphs
+log "Configuring graphic logs in git..."
+git config --global alias.lg1 "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
+git config --global alias.lg2 "log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
+git config --global alias.lg \!"git lg1"
+
+log "More bash configurations..."
+export result=`grep "show-all-if-ambiguous" ~/.bashrc`
+if [ "$result" = "" ]; then
+	echo "bind 'set show-all-if-ambiguous on'" >> ~/.bashrc
+fi
+export result=`grep "history-search-backward" ~/.bashrc`
+if [ "$result" = "" ]; then
+	echo "bind '\"\e[A\": history-search-backward'" >> ~/.bashrc
+	echo "bind '\"\e[B\": history-search-forward'" >> ~/.bashrc
+fi
+export result=`grep "function dup " ~/.bashrc`
+if [ "$result" = "" ]; then
+	echo "function dup { echo -n \$1 | xclip -sel clip; }" >> ~/.bashrc
+fi
+source $HOME/.bashrc || true
+
+export result=`grep "cd.." ~/.bashrc`
+if [ "$result" = "" ]; then
+    echo "alias cd..=\"cd ..\"" >> ~/.bashrc
+fi
+
+echo "Full log will be written to '$LOG_FILE'."
+for _package in $COMMON_PACKAGES $PACKAGES; do
+	log "Installing package '$_package'..."
+	exe-and-log-debug "$PKG_MGR_CMD $_package"
+done
+log "Installing pip..."
+exe-and-log-debug "sudo easy_install pip"
+for _package in $PIP_PACKAGES; do
+	log "Installing PIP package '$_package'..."
+	exe-and-log-debug "sudo pip install $_package --upgrade"
+done
+
+log "Configuring tmux"
+cp {,~/.}tmux.conf
+log "Configuring VIM..."
+cp {,~/.}vimrc
+log "Configuring Vrapper..."
+cp {,~/.}vrapperrc
+
+mkdir -p ~/.vim
+mkdir -p ~/.vim/bundle
+mkdir -p ~/.vim/after
+
+function install-vim-plugin {
+    PLUGIN_DIR="$HOME/.vim/bundle/$2"
+    if [ ! -d "$PLUGIN_DIR" ]; then
+        git clone https://github.com/$1/$2 ~/.vim/bundle/$2
+    else
+        exe-and-log-debug "cd $PLUGIN_DIR"
+        exe-and-log-debug "git fetch origin"
+        exe-and-log-debug "git checkout -f origin/master"
+        exe-and-log-debug "cd -"
+    fi
+    cp -rf ~/.vim/bundle/$2/after/* ~/.vim/after/ || true
+}
+
+install-vim-plugin kien ctrlp.vim
+install-vim-plugin ivyl vim-bling
+install-vim-plugin yegappan grep
+install-vim-plugin davidhalter jedi-vim
+install-vim-plugin nvie vim-flake8
+install-vim-plugin nvie vim-surround
+install-vim-plugin kien rainbow_parentheses.vim
+install-vim-plugin tpope vim-fugitive
+install-vim-plugin ervandew supertab
+install-vim-plugin kevinw pyflakes-vim
+install-vim-plugin scrooloose nerdtree
+install-vim-plugin lyuts vim-rtags
+
+log "Copying flake8 configuration file..."
+mkdir -p ~/.config
+cp {,~/.config/}flake8
+log "Installing textual-switcher..."
+if [ ! -d textual-switcher ]; then
+    git clone https://github.com/followerofmammon/textual-switcher
+fi
+cd textual-switcher
+git pull
+make install
+cd -
+
+log "Installing workspaces"
+if [ ! -d workspaces ]; then
+    git clone https://github.com/followerofmammon/workspaces
+fi
+cd workspaces
+git pull
+cd -
+
 #log "Installing rtags client/server"
 #if [ ! -d rtags ]; then
-#    git clone https://github.com/Andersbakken/rtags
+    #git clone https://github.com/Andersbakken/rtags
 #fi
-cd rtags
+#cd rtags
 #git pull
 #git submodule init
 #git submodule update
 #mkdir -p build
 #cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=1
 #make
-echo 1
-sudo cp bin/{rdm,rc,rp} /usr/bin
-echo 2
-cd -
-echo 3
-mkdir -p ~/.config/systemd/user/
-echo 4
-sudo cp rdm.service ~/.config/systemd/user/
-echo 5
-sudo cp rdm.socket ~/.config/systemd/user/
-echo 6
-sudo systemctl daemon-reload
-echo 7
-systemctl --user enable rdm.socket
-echo 8
-systemctl --user start rdm.socket
-systemctl --user enable rdm.service
-systemctl --user start rdm.service
-echo 9
+#sudo cp bin/{rdm,rc,rp} /usr/bin
+#cd -
+#mkdir -p ~/.config/systemd/user/
+#sudo cp rdm.service ~/.config/systemd/user/
+#sudo cp rdm.socket ~/.config/systemd/user/
+#sudo systemctl daemon-reload
+#systemctl --user enable rdm.socket
+#systemctl --user start rdm.socket
+#systemctl --user enable rdm.service
+#systemctl --user start rdm.service
+
 
 log "Disabling visual effects in GNOME..."
 gsettings set org.gnome.desktop.interface enable-animations false
