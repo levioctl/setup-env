@@ -13,9 +13,12 @@ then
         cmake
         llvm
         gcc
+        vlc
     "
-    PKG_MGR_CMD="sudo yum install -y"
+    PKG_MGR_CMD="sudo dnf install -y"
     SERVICE_FILES_DIR=/usr/lib/systemd/system/
+    # For VLC player
+    dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 elif [ "$OS" = "Ubuntu" ]
 then
     PACKAGES="
