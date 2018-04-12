@@ -75,6 +75,12 @@ for _param in $_params; do
 	fi
 done
 
+# Fix rtags service file (installed with rdm.socket in unit file of service, but actual unit
+# file of socket is rtags.socket.
+RTAGS_UNITFILE_PATH=`systemctl show -p FragmentPath rtags.service --user|cut -d "=" -f 2-`
+sudo sed -i.bak s/rdm.socket/rtags.socket/g $RTAGS_UNITFILE_PATH
+systemctl daemon-reload --user
+systemctl restart rtags --user
 
 # Pretty git branch graphs
 log "Configuring graphic logs in git..."
