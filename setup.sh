@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Determine package manager
-COMMON_PACKAGES="python python-setuptools tmux ipython firefox xclip sshpass curl openssh-server"
+COMMON_PACKAGES="python python-setuptools tmux ipython firefox xclip sshpass curl openssh-server rtags"
 OS=`grep ^NAME /etc/os-release | cut -d '=' -f 2`
 OS=`sed -e 's/^"//' -e 's/"$//' <<<"$OS"`
 if [ "$OS" = "Fedora" ]
@@ -171,29 +171,6 @@ fi
 cd workspaces
 git pull
 cd -
-
-#log "Installing rtags client/server"
-#if [ ! -d rtags ]; then
-    #git clone https://github.com/Andersbakken/rtags
-#fi
-#cd rtags
-#git pull
-#git submodule init
-#git submodule update
-#mkdir -p build
-#cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=1
-#make
-#sudo cp bin/{rdm,rc,rp} /usr/bin
-#cd -
-#mkdir -p ~/.config/systemd/user/
-#sudo cp rdm.service ~/.config/systemd/user/
-#sudo cp rdm.socket ~/.config/systemd/user/
-#sudo systemctl daemon-reload
-#systemctl --user enable rdm.socket
-#systemctl --user start rdm.socket
-#systemctl --user enable rdm.service
-#systemctl --user start rdm.service
-
 
 log "Disabling visual effects in GNOME..."
 gsettings set org.gnome.desktop.interface enable-animations false
