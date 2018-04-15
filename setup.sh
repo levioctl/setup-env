@@ -14,6 +14,7 @@ then
         llvm
         gcc
         vlc
+        fzf
     "
     PKG_MGR_CMD="sudo dnf install -y"
     SERVICE_FILES_DIR=/usr/lib/systemd/system/
@@ -200,6 +201,19 @@ log "Making sure rhythmbox is not installed..."
 sudo apt-get remove rhythmbox || true
 
 log "Done."
+
+log Creating music shortcut (C-n)...
+mkdir -p ~/commands
+cp music.sh ~/commands/
+export result=`grep "music" ~/.bashrc`
+if [ "$result" = "" ]; then
+    echo "alias music='~/commands/music.sh >2 /dev/null'" >> ~/.bashrc
+fi
+export result=`grep "music" ~/.inputrc`
+if [ "$result" = "" ]; then
+    echo '"\C-n": "music\C-m"' >> ~/.inputrc
+fi
+
 log "Stuff to do manually:"
 log "* Install the no-topleft corner GNOME plugin"
 log "* Enable the places status indicator GNOME plugin"
