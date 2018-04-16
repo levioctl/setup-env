@@ -10,12 +10,11 @@ set cindent
 set cinoptions=(0,u0,U0
 syntax enable
 
-cmap w!! w !sudo tee % >/dev/null
 
 "Switch-tab behavior
 set switchbuf+=usetab,newtab
 
-set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/vim-flake8,~/.vim/bundle/vim-surround,~/.vim/bundle/rainbow_parentheses.vim,~/.vim/bundle/bufexplorer.vim,~/.vim/bundle/jedi-vim,~/.vim/bundle/vim-fugitive,~/.vim/bundle/supertab,~/.vim/bundle/pyflakes-vim,~/.vim/bundle/nerdtree
+set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/vim-flake8,~/.vim/bundle/vim-surround,~/.vim/bundle/rainbow_parentheses.vim,~/.vim/bundle/bufexplorer.vim,~/.vim/bundle/jedi-vim,~/.vim/bundle/vim-fugitive,~/.vim/bundle/supertab,~/.vim/bundle/pyflakes-vim,~/.vim/bundle/nerdtree,~/.vim/bundle/vim-rtags
 set omnifunc=jedi#completions
 
 let g:ctrlp_working_path_mode = 0
@@ -35,7 +34,6 @@ set incsearch
 "highlight search
 set hlsearch
 "Press enter to remove search highlight
-nnoremap <silent> <ENTER> :noh<cr><esc>
 "Spell check
 "set spell spelllang=en_us
 "highlight clear SpellBad
@@ -81,26 +79,33 @@ endif
 hi CursorLine cterm=NONE,underline
 set cursorline
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "Key mappings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Tabs
 noremap <C-h> gT
 noremap <C-l> gt
+"Scroll without moving cursor
 noremap <C-j> <C-e>
 noremap <C-k> <C-y>
-noremap <S-j> :/^\(\s\s\s\s\)*\(class\\|def\)\s<Enter>:noh<Enter>:<Enter>w
-map <S-k> :?^\(\s\s\s\s\)*\(class\\|def\)\s<Enter>:noh<Enter>:<Enter>w
+"Jump to next/previous python function
+autocmd FileType python noremap <S-j> :/^\(\s\s\s\s\)*\(class\\|def\)\s<Enter>:noh<Enter>:<Enter>w
+autocmd FileType python map <S-k> :?^\(\s\s\s\s\)*\(class\\|def\)\s<Enter>:noh<Enter>:<Enter>w
+"Indentation
 vnoremap < <gv " better indentation
 vnoremap > >gv " better indentation
 nnoremap <C-c> :set cursorline!<CR>
+"hjkl movement in insert mode
 imap <C-h> <Left>
 imap <C-j> <Down>
 imap <C-k> <Up>
 imap <C-l> <Right>
-nnoremap <C-e> :tabedit<Enter>:Explore<CR>
 "Scroll the autocompletion list
 inoremap <expr> j pumvisible() ? '<C-n>' : 'j'
 inoremap <expr> k pumvisible() ? '<C-p>' : 'k'
 inoremap <expr> <C-d> pumvisible() ? 'j' : <C-d>
 inoremap <expr> <C-u> pumvisible() ? 'j' : <C-u>
+"Expanding windows when window is split
 map - <C-W>-
 map = <C-W>+
 map _ <C-W><
@@ -109,6 +114,7 @@ noremap Q <Nop>
 "Use Tab instead of %
 nnoremap <tab> %
 vnoremap <tab> %
+"Flake8
 autocmd FileType python map <buffer> <Leader>f :call Flake8()<CR>
 " Ctrl-t to open a new tab
 nnoremap <C-t> :tabedit<CR>
@@ -121,10 +127,22 @@ nnoremap <C-f> :%s/\<<C-r><C-w>\>//g<Left><Left>
 "cursor, so undefine the mapping there.
 autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 
+"Close the completion list below
 noremap <Leader>c :ccl<Enter>
 
+"Nerdtree
 map <C-e> :NERDTreeToggle<cr>
 map <Leader>e :NERDTreeFind<cr>
+
+"Write buffer with sudo (if read only)
+cmap w!! w !sudo tee % >/dev/null
+
+"Remove search highlight
+nnoremap <silent> <ENTER> :noh<cr><esc>
+
+"Navigate to next/previous function
+autocmd FileType cpp noremap <S-j> ]mzz
+autocmd FileType cpp noremap <S-k> [mzz
 
 "File explorer tree style
 let g:netrw_liststyle = 3
@@ -159,8 +177,11 @@ function TabsOrSpaces()
     let numSpaces=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^ "'))
 
     if numTabs > numSpaces
-        setlocal noexpandtab
+        "setlocal noexpandtab
     endif
 endfunction
 autocmd BufReadPost * call TabsOrSpaces()
 set completeopt=longest,menuone
+
+" Scroll down in supertab
+let g:SuperTabDefaultCompletionType = "<c-n>"
