@@ -214,6 +214,12 @@ if [ "$result" = "" ]; then
     echo '"\C-n": "music\C-m"' >> ~/.inputrc
 fi
 
+log "Setting up keybindings for ctrl+left and ctrl+right in bash since they don't exist on some OSs"
+export result=`grep "forward-word" ~/.inputrc`
+if [ "$result" = "" ]; then
+    cat inputrc_keybindings >> ~/.inputrc
+endif
+
 log "Stuff to do manually:"
 log "* Install the no-topleft corner GNOME plugin"
 log "* Enable the places status indicator GNOME plugin"
