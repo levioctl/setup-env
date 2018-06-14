@@ -14,13 +14,13 @@ syntax enable
 "Switch-tab behavior
 set switchbuf+=usetab,newtab
 
-set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/vim-flake8,~/.vim/bundle/vim-surround,~/.vim/bundle/rainbow_parentheses.vim,~/.vim/bundle/bufexplorer.vim,~/.vim/bundle/jedi-vim,~/.vim/bundle/vim-fugitive,~/.vim/bundle/supertab,~/.vim/bundle/pyflakes-vim,~/.vim/bundle/nerdtree,~/.vim/bundle/vim-rtags
+set runtimepath^=~/.vim/bundle/ctrlp.vim,~/.vim/bundle/vim-bling,~/.vim/bundle/grep,~/.vim/bundle/vim-surround,~/.vim/bundle/rainbow_parentheses.vim,~/.vim/bundle/bufexplorer.vim,~/.vim/bundle/jedi-vim,~/.vim/bundle/vim-fugitive,~/.vim/bundle/supertab,~/.vim/bundle/pyflakes-vim,~/.vim/bundle/nerdtree
 set omnifunc=jedi#completions
 
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.git|\.hg|\.svn|.o|.connections|build)$',
-  \ 'file': '\v\.(exe|so|dll|pyc|stratolog|logs.racktest)$',
+  \ 'dir':  '\v[\/](\.git|\.hg|\.svn|.connections|build)$',
+  \ 'file': '\v\.(exe|dll|pyc|stratolog|logs.racktest|o|so|a)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
 let g:ctrlp_max_files=300000
@@ -185,3 +185,13 @@ set completeopt=longest,menuone
 
 " Scroll down in supertab
 let g:SuperTabDefaultCompletionType = "<c-n>"
+
+hi SpellBad ctermbg=000
+"hi WarningMsg ctermbg=009 ctermbg=001
+
+
+"<S-Insert> in GVIM
+if has("gui_running")
+    map  <silent>  <S-Insert>  "+p
+    imap <silent>  <S-Insert>  <Esc>"+pa
+endif
