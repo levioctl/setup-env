@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Determine package manager
-COMMON_PACKAGES="python python-setuptools tmux ipython firefox xclip sshpass curl openssh-server rtags"
+COMMON_PACKAGES="python python-setuptools tmux ipython firefox xclip sshpass curl openssh-server"
 OS=`grep ^NAME /etc/os-release | cut -d '=' -f 2`
 OS=`sed -e 's/^"//' -e 's/"$//' <<<"$OS"`
 if [ "$OS" = "Fedora" ]
@@ -15,6 +15,7 @@ then
         gcc
         vlc
         fzf
+	python-pip
     "
     PKG_MGR_CMD="sudo dnf install -y"
     SERVICE_FILES_DIR=/usr/lib/systemd/system/
@@ -30,6 +31,7 @@ then
         cmake
         llvm
         gcc
+	python-pip
     "
     PKG_MGR_CMD="sudo apt install -y"
     SERVICE_FILES_DIR=/lib/systemd/system/
@@ -76,13 +78,6 @@ for _param in $_params; do
 	fi
 done
 
-# Fix rtags service file (installed with rdm.socket in unit file of service, but actual unit
-# file of socket is rtags.socket.
-RTAGS_UNITFILE_PATH=`systemctl show -p FragmentPath rtags.service --user|cut -d "=" -f 2-`
-sudo sed -i.bak s/rdm.socket/rtags.socket/g $RTAGS_UNITFILE_PATH
-systemctl daemon-reload --user
-systemctl restart rtags --user
-
 # Pretty git branch graphs
 log "Configuring graphic logs in git..."
 git config --global alias.lg1 "log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
@@ -115,12 +110,12 @@ for _package in $COMMON_PACKAGES $PACKAGES; do
 	log "Installing package '$_package'..."
 	exe-and-log-debug "$PKG_MGR_CMD $_package"
 done
-log "Installing pip..."
-exe-and-log-debug "sudo easy_install pip"
-for _package in $PIP_PACKAGES; do
-	log "Installing PIP package '$_package'..."
-	exe-and-log-debug "sudo pip install $_package --upgrade"
-done
+#log "Installing pip..."
+#exe-and-log-debug "sudo easy_install pip"
+#for _package in $PIP_PACKAGES; do
+#	log "Installing PIP package '$_package'..."
+#	exe-and-log-debug "sudo pip install $_package --upgrade"
+#done
 
 log "Configuring tmux"
 cp {,~/.}tmux.conf
@@ -157,7 +152,6 @@ install-vim-plugin tpope vim-fugitive
 install-vim-plugin ervandew supertab
 install-vim-plugin kevinw pyflakes-vim
 install-vim-plugin scrooloose nerdtree
-install-vim-plugin lyuts vim-rtags
 
 log "Copying flake8 configuration file..."
 mkdir -p ~/.config
@@ -202,7 +196,7 @@ sudo apt-get remove rhythmbox || true
 
 log "Done."
 
-log Creating music shortcut (C-n)...
+log "Creating music shortcut (C-n)..."
 mkdir -p ~/commands
 cp music.sh ~/commands/
 export result=`grep "music" ~/.bashrc`
@@ -211,6 +205,7 @@ if [ "$result" = "" ]; then
 fi
 export result=`grep "music" ~/.inputrc`
 if [ "$result" = "" ]; then
+    touch ~/.inputrc
     echo '"\C-n": "music\C-m"' >> ~/.inputrc
 fi
 
@@ -218,7 +213,7 @@ log "Setting up keybindings for ctrl+left and ctrl+right in bash since they don'
 export result=`grep "forward-word" ~/.inputrc`
 if [ "$result" = "" ]; then
     cat inputrc_keybindings >> ~/.inputrc
-endif
+fi
 
 log "Stuff to do manually:"
 log "* Install the no-topleft corner GNOME plugin"
