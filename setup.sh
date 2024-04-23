@@ -1,54 +1,38 @@
 #!/bin/bash
 
 # Determine package manager
-COMMON_PACKAGES="python python-setuptools tmux ipython firefox xclip sshpass curl openssh-server"
+COMMON_PACKAGES="tmux ipython3 xclip sshpass curl openssh-server"
 OS=`grep ^NAME /etc/os-release | cut -d '=' -f 2`
 OS=`sed -e 's/^"//' -e 's/"$//' <<<"$OS"`
 if [ "$OS" = "Fedora" ]
 then
     PACKAGES="
         python-devel
-        vim
+        vim-gtk3
         vim-X11
         cmake
-        llvm
-        gcc
-        vlc
-        fzf
-	python-pip
+        g++
     "
     PKG_MGR_CMD="sudo dnf install -y"
-    SERVICE_FILES_DIR=/usr/lib/systemd/system/
     # For VLC player
     dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-elif [ "$OS" = "Ubuntu" ]
+elif [ "$OS" = "Debian GNU/Linux" ] || [ "$OS" = "Ubuntu" ]
 then
     PACKAGES="
-        python-dev
-        vim-gtk
+        python3-dev
+        vim-gtk3
         vim-gui-common
         cmatrix
         cmake
-        llvm
-        gcc
-	python-pip
+        g++
     "
     PKG_MGR_CMD="sudo apt install -y"
-    SERVICE_FILES_DIR=/lib/systemd/system/
-    # The following repo is required for vim-gtk
-    # taken from http://askubuntu.com/questions/775059/vim-python-support-on-ubuntu-16-04
-#sudo add-apt-repository -y ppa:pi-rho/dev
-#sudo apt-get -y update
+
 else
-    echo "Error: Package manager was not found."
+    echo "Error: Package manager was not found for OS '$OS'."
     exit 1;
 fi
-PIP_PACKAGES="
-    mock
-    pep8
-    jedi
-    flake8
-"
+
 export LOG_FILE="/tmp/setup.log"
 
 echo "Run this without 'source'."
@@ -110,19 +94,11 @@ for _package in $COMMON_PACKAGES $PACKAGES; do
 	log "Installing package '$_package'..."
 	exe-and-log-debug "$PKG_MGR_CMD $_package"
 done
-#log "Installing pip..."
-#exe-and-log-debug "sudo easy_install pip"
-#for _package in $PIP_PACKAGES; do
-#	log "Installing PIP package '$_package'..."
-#	exe-and-log-debug "sudo pip install $_package --upgrade"
-#done
 
 log "Configuring tmux"
 cp {,~/.}tmux.conf
 log "Configuring VIM..."
 cp {,~/.}vimrc
-log "Configuring Vrapper..."
-cp {,~/.}vrapperrc
 
 mkdir -p ~/.vim
 mkdir -p ~/.vim/bundle
@@ -144,34 +120,23 @@ function install-vim-plugin {
 install-vim-plugin kien ctrlp.vim
 install-vim-plugin ivyl vim-bling
 install-vim-plugin yegappan grep
-install-vim-plugin davidhalter jedi-vim
-install-vim-plugin nvie vim-flake8
-install-vim-plugin nvie vim-surround
-install-vim-plugin kien rainbow_parentheses.vim
+install-vim-plugin tpope vim-surround
+install-vim-plugin frazrepo vim-rainbow
 install-vim-plugin tpope vim-fugitive
-install-vim-plugin ervandew supertab
-install-vim-plugin kevinw pyflakes-vim
 install-vim-plugin scrooloose nerdtree
 
 log "Copying flake8 configuration file..."
 mkdir -p ~/.config
 cp {,~/.config/}flake8
-log "Installing textual-switcher..."
-if [ ! -d textual-switcher ]; then
-    git clone https://github.com/followerofmammon/textual-switcher
-fi
-cd textual-switcher
-git pull
-make install
-cd -
 
-log "Installing workspaces"
-if [ ! -d workspaces ]; then
-    git clone https://github.com/followerofmammon/workspaces
-fi
-cd workspaces
-git pull
-cd -
+#log "Installing textual-switcher..."
+#if [ ! -d textual-switcher ]; then
+#    git clone https://github.com/followerofmammon/textual-switcher
+#fi
+#cd textual-switcher
+#git pull
+#make install
+#cd -
 
 log "Disabling visual effects in GNOME..."
 gsettings set org.gnome.desktop.interface enable-animations false
@@ -195,26 +160,3 @@ log "Making sure rhythmbox is not installed..."
 sudo apt-get remove rhythmbox || true
 
 log "Done."
-
-log "Creating music shortcut (C-n)..."
-mkdir -p ~/commands
-cp music.sh ~/commands/
-export result=`grep "music" ~/.bashrc`
-if [ "$result" = "" ]; then
-    echo "alias music='~/commands/music.sh >2 /dev/null'" >> ~/.bashrc
-fi
-export result=`grep "music" ~/.inputrc`
-if [ "$result" = "" ]; then
-    touch ~/.inputrc
-    echo '"\C-n": "music\C-m"' >> ~/.inputrc
-fi
-
-log "Setting up keybindings for ctrl+left and ctrl+right in bash since they don't exist on some OSs"
-export result=`grep "forward-word" ~/.inputrc`
-if [ "$result" = "" ]; then
-    cat inputrc_keybindings >> ~/.inputrc
-fi
-
-log "Stuff to do manually:"
-log "* Install the no-topleft corner GNOME plugin"
-log "* Enable the places status indicator GNOME plugin"
