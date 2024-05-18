@@ -38,27 +38,61 @@ vim.opt.rtp:prepend(lazypath)
 --- lazy settings, plugins to install
 
 local plugins = {
+
+  -- Syntax parser (not LSP). Provides syntax tree metadata for other plugins
+  {
+      'nvim-treesitter/nvim-treesitter',
+      config = function()
+          require'nvim-treesitter.configs'.setup({
+            -- A list of parser names, or "all" (the five listed parsers should always be installed)
+            ensure_installed = { "c", "cpp", "lua", "vim", "vimdoc", "query" },
+        
+            -- Install parsers synchronously (only applied to `ensure_installed`)
+            sync_install = false,
+        
+            ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
+            -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
+        
+            highlight = {
+              enable = true,
+            },
+        })
+      end,
+  },
+
+  -- Pickers
   {
       'nvim-telescope/telescope.nvim', tag = '0.1.6',
       dependencies = { 'nvim-lua/plenary.nvim', 'nvim-treesitter/nvim-treesitter' }
   },
+
+  -- Scrollbar
   {
       'dstein64/nvim-scrollview',
       signs_on_startup = {'all'}
   },
+
+  -- Base LSP plugin
+  {'neovim/nvim-lspconfig'},
+
+  -- Mason, for installing language server internally
+  {"williamboman/mason.nvim"},
+
+  -- Completion with LSP
+  {'hrsh7th/cmp-nvim-lsp'},
+  {'hrsh7th/nvim-cmp'},
+
+  -- File explorer tree
   {
-      'neovim/nvim-lspconfig'
-  },
-    {
-  "nvim-tree/nvim-tree.lua",
-  version = "*",
-  lazy = false,
-  dependencies = {
-    "nvim-tree/nvim-web-devicons",
-  },
-  config = function()
-    require("nvim-tree").setup {}
-  end,
+	  "nvim-tree/nvim-tree.lua",
+	  version = "*",
+	  lazy = false,
+	  dependencies = {
+		  "nvim-tree/nvim-web-devicons",
+	  },
+	  config = function()
+		  require("nvim-tree").setup {}
+	  end,
   }
 }
 
@@ -101,39 +135,99 @@ local actions = require("telescope.actions")
 mappings.default_mappings["i"]["<C-j>"] = actions.move_selection_next
 mappings.default_mappings["i"]["<C-k>"] = actions.move_selection_previous
 
-local map = function(type, key, value)
-	vim.fn.nvim_buf_set_keymap(0,type,key,value,{noremap = true, silent = true});
+--- Mason
+mason = require("mason")
+mason.setup()
+
+print('hi')
+mason_reg = require("mason-registry")
+if not mason_reg.is_installed("clangd") then
+    print('Installing clangd via mason')
+    vim.cmd("MasonInstall clangd")
 end
 
-local custom_attach = function(client)
-	print("LSP started.");
-	require'completion'.on_attach(client)
-	require'diagnostic'.on_attach(client)
+--- LSP&completion stuff
+--- The following is the default configuration of nvim-cmp, copied from GitHub
+--- except the last line which sets the server as clangd
 
-	map('n','gD','<cmd>lua vim.lsp.buf.declaration()<CR>')
-	map('n','gd','<cmd>lua vim.lsp.buf.definition()<CR>')
-	map('n','K','<cmd>lua vim.lsp.buf.hover()<CR>')
-	map('n','gr','<cmd>lua vim.lsp.buf.references()<CR>')
-	map('n','gs','<cmd>lua vim.lsp.buf.signature_help()<CR>')
-	map('n','gi','<cmd>lua vim.lsp.buf.implementation()<CR>')
-	map('n','gt','<cmd>lua vim.lsp.buf.type_definition()<CR>')
-	map('n','<leader>gw','<cmd>lua vim.lsp.buf.document_symbol()<CR>')
-	map('n','<leader>gW','<cmd>lua vim.lsp.buf.workspace_symbol()<CR>')
-	map('n','<leader>ah','<cmd>lua vim.lsp.buf.hover()<CR>')
-	map('n','<leader>af','<cmd>lua vim.lsp.buf.code_action()<CR>')
-	map('n','<leader>ee','<cmd>lua vim.lsp.util.show_line_diagnostics()<CR>')
-	map('n','<leader>ar','<cmd>lua vim.lsp.buf.rename()<CR>')
-	map('n','<leader>=', '<cmd>lua vim.lsp.buf.formatting()<CR>')
-	map('n','<leader>ai','<cmd>lua vim.lsp.buf.incoming_calls()<CR>')
-	map('n','<leader>ao','<cmd>lua vim.lsp.buf.outgoing_calls()<CR>')
-end
+  -- Set up nvim-cmp.
+  local cmp = require'cmp'
 
+  cmp.setup({
+    snippet = {
+      -- REQUIRED - you must specify a snippet engine
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
+        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+        -- vim.snippet.expand(args.body) -- For native neovim snippets (Neovim v0.10+)
+      end,
+    },
+    window = {
+      -- completion = cmp.config.window.bordered(),
+      -- documentation = cmp.config.window.bordered(),
+    },
+    mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    }),
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      { name = 'vsnip' }, -- For vsnip users.
+      -- { name = 'luasnip' }, -- For luasnip users.
+      -- { name = 'ultisnips' }, -- For ultisnips users.
+      -- { name = 'snippy' }, -- For snippy users.
+    }, {
+      { name = 'buffer' },
+    })
+  })
 
---- LSP
-require'lspconfig'.pyright.setup{}
-require'lspconfig'.clangd.setup{}
+  -- To use git you need to install the plugin petertriho/cmp-git and uncomment lines below
+  -- Set configuration for specific filetype.
+  --[[ cmp.setup.filetype('gitcommit', {
+    sources = cmp.config.sources({
+      { name = 'git' },
+    }, {
+      { name = 'buffer' },
+    })
+ })
+ require("cmp_git").setup() ]]-- 
 
- vim.lsp.set_log_level("trace")
+  -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline({ '/', '?' }, {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+      { name = 'buffer' }
+    }
+  })
 
----
-vim.opt.termguicolors = true
+  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+  cmp.setup.cmdline(':', {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    }),
+    matching = { disallow_symbol_nonprefix_matching = false }
+  })
+
+  -- Set up lspconfig.
+  local capabilities = require('cmp_nvim_lsp').default_capabilities()
+  -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
+  require('lspconfig').clangd.setup {
+    capabilities = capabilities
+  }
+
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  update_in_insert = false,
+  underline = true,
+  severity_sort = false,
+  float = true,
+})
